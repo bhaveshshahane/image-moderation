@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Moderator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-lg w-full bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-700">
+        <h2 class="text-3xl font-bold text-center mb-2">AI Image Moderator</h2>
+        <p class="text-gray-400 text-center mb-6">Advanced Content Detection</p>
+
+        <!-- Backend URL Input (for production) -->
+        <input type="text" id="backendUrl" placeholder="Backend API URL (e.g., http://localhost:3000/api/moderate)"
+               class="w-full mb-4 p-3 bg-gray-900 border border-gray-700 rounded text-white placeholder-gray-500 text-sm">
+
+        <!-- File Upload -->
+        <input type="file" id="fileInput" accept="image/*"
+               class="w-full mb-4 p-2 bg-gray-900 border border-gray-700 rounded text-gray-400">
+
+        <!-- URL Input -->
+        <input type="text" id="imageUrl" placeholder="Or paste image URL"
+               class="w-full mb-4 p-3 bg-gray-900 border border-gray-700 rounded text-white placeholder-gray-500">
+
+        <!-- Button -->
+        <button onclick="checkImage()" id="btn"
+                class="w-full bg-blue-600 py-3 rounded font-bold hover:bg-blue-500 transition">
+            Analyze Image
+        </button>
+
+        <!-- Result -->
+        <div id="result" class="mt-6 hidden p-4 rounded font-bold text-center">
+            <p id="resultText"></p>
+        </div>
+
+        <!-- Preview -->
+        <img id="preview" class="mt-4 hidden rounded-lg max-h-64 w-full object-contain"/>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="hidden mt-4 text-center">
+            <div class="inline-block animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+        </div>
+
+        <!-- Info -->
+        <div class="mt-6 p-3 bg-gray-700 rounded text-xs text-gray-300">
+            <p><strong>⚠️ For Production:</strong> Use a backend server to keep your API key secure.</p>
+            <p class="mt-2">See <code>examples/backend-example.js</code> for a secure Express implementation.</p>
+        </div>
+    </div>
+
+    <script>
+        // Get backend URL from input (optional for local development)
+        function getBackendUrl() {
+            return document.getElementById("backendUrl").value.trim() || "/api/moderate";
+        }
+
+        async function checkImage() {
+            const file = document.getElementById("fileInput").files[0];
+            const url = document.getElementById("imageUrl").value.trim();
+            const btn = document.getElementById("btn");
+            const result = document.getElementById("result");
+            const preview = document.getElementById("preview");
+            const loading = document.getElementById("loading");
+            const resultText = document.getElementById("resultText");
+
+            if (!file && !url) {
+                alert("Please upload an image or enter a URL");
+                return;
+            }
+
+            let base64 = "";
+            btn.disabled = true;
+            loading.classList.remove("hidden");
+            result.classList.add("hidden");
+
+            try {
+                // Get Image
+                if (file) {
+                    base64 = await toBase64(file);
+                    preview.src = URL.createObjectURL(file);
+                } else if (url) {
+                    base64 = await fromURL(url);
+                    preview.src = url;
+                }
+
+                preview.classList.remove("hidden");
+
+                // Send to backend (secure)
+                const backendUrl = getBackendUrl();
+                const response = await fetch(backendUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        image: base64,
+                        mimeType: file ? file.type : "image/jpeg"
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "Moderation failed");
+                }
+
+                showResult(data.status, data.reason, data.safe);
+
+            } catch (error) {
+                console.error(error);
+                showResult("ERROR", error.message, false);
+            } finally {
+                loading.classList.add("hidden");
+                btn.disabled = false;
+            }
+        }
+
+        function showResult(status, reason, isSafe) {
+            const result = document.getElementById("result");
+            const resultText = document.getElementById("resultText");
+            result.classList.remove("hidden");
+            resultText.innerText = `${status}: ${reason}`;
+            result.className = `mt-6 p-4 rounded font-bold text-center ${isSafe ? "bg-green-600" : "bg-red-600"}`;
+        }
+
+        function toBase64(file) {
+            return new Promise(resolve => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result.split(",")[1]);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function fromURL(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = "anonymous";
+                img.src = "https://corsproxy.io/?url=" + encodeURIComponent(url);
+
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    const MAX_WIDTH = 512;
+                    const scale = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    resolve(canvas.toDataURL("image/jpeg", 0.8).split(",")[1]);
+                };
+
+                img.onerror = () => reject(new Error("Image load failed"));
+            });
+        }
+    </script>
+</body>
+</html>

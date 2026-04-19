@@ -1,0 +1,30 @@
+{
+  "name": "image-moderation",
+  "version": "1.0.0",
+  "description": "AI-powered image moderation package using OpenRouter API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhaveshshahane/image-moderation.git"
+  },
+  "keywords": [
+    "image-moderation",
+    "openrouter",
+    "ai",
+    "content-moderation",
+    "vision-api"
+  ],
+  "author": "bhavesh shahane",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bhaveshshahane/image-moderation/issues"
+  },
+  "homepage": "https://github.com/bhaveshshahane/image-moderation#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
+}
