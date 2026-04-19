@@ -88,33 +88,14 @@ The demo page will load automatically with the backend URL pre-filled!
 - Click "Analyze Image"
 - See the moderation result (SAFE/UNSAFE) with reasons
 
-### Demo Page Preview
-
-To capture a screenshot of the demo:
-1. Run the server as shown above
-2. Open `http://localhost:3000` in your browser
-3. Take a screenshot and save it as `examples/demo-screenshot.png`
 
 The demo page features:
 - 🖼️ Image upload (file or URL)
 - ⚡ Real-time moderation analysis
 - 🎨 Clean, modern UI with Tailwind CSS
 - 📊 Clear results showing Safe/Unsafe status with reasons
-- 🔒 Secure backend processing (API key stays hidden)
 
 ---
-
-## Usage
-
-### ⚠️ Security: Backend is Recommended
-
-**NEVER expose your API key or model name to the client!**
-
-#### ✅ Secure (Backend)
-API key and model are kept on server, hidden from users.
-
-#### ❌ Not Secure (Client-side)
-API key visible in browser, model name exposed to users.
 
 ### Secure Backend Implementation (Recommended)
 
@@ -309,42 +290,13 @@ try {
 
 ## Demo Screenshots
 
-### How to Capture Demo Screenshots
-
-1. Follow the "Quick Start - Run the Demo" section above
-2. Open `http://localhost:3000` in your browser
-3. Upload an image and analyze it
-4. Take a screenshot using your browser's screenshot tool (Print Screen or Right-click → Capture)
-5. Save it as `examples/demo-screenshot.png`
+### Live Demo
 
 ### What You'll See
 
 The demo interface includes:
 
-```
-┌─────────────────────────────────────────┐
-│        AI Image Moderator               │
-│       Advanced Content Detection        │
-├─────────────────────────────────────────┤
-│                                         │
-│  Backend URL: http://localhost:3000/... │
-│                                         │
-│  📁 Choose Image File                   │
-│                                         │
-│  🔗 Or paste image URL                  │
-│                                         │
-│  [    Analyze Image Button    ]         │
-│                                         │
-│  ✓ Result: SAFE/UNSAFE                  │
-│    Reason: [explanation]                │
-│                                         │
-│  🖼️ [Image Preview]                     │
-│                                         │
-│  ⚠️ For Production:                      │
-│  Use backend to keep API key secure     │
-│                                         │
-└─────────────────────────────────────────┘
-```
+![Demo UI](examples/demo-screenshot.png)   
 
 ### Features in the Demo
 
