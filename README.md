@@ -14,7 +14,7 @@ An npm package for AI-powered image moderation using OpenRouter API. Detect nudi
 ## Installation
 
 ```bash
-npm install image-moderation
+npm install ai-image-moderation
 ```
 
 ## Setup
