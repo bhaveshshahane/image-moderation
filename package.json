@@ -1,5 +1,5 @@
 {
-  "name": "image-moderation",
+  "name": "ai-image-moderation",
   "version": "1.0.0",
   "description": "AI-powered image moderation package using OpenRouter API",
   "main": "index.js",
