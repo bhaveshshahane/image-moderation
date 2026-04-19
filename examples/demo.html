@@ -52,8 +52,22 @@
     <script>
         // Get backend URL from input (optional for local development)
         function getBackendUrl() {
-            return document.getElementById("backendUrl").value.trim() || "/api/moderate";
+            let url = document.getElementById("backendUrl").value.trim();
+            if (!url) {
+                // Auto-detect backend URL from current location
+                if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+                    url = `${window.location.origin}/api/moderate`;
+                }
+            }
+            return url || "/api/moderate";
         }
+
+        // Auto-populate backend URL on page load
+        window.addEventListener("load", () => {
+            if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+                document.getElementById("backendUrl").value = `${window.location.origin}/api/moderate`;
+            }
+        });
 
         async function checkImage() {
             const file = document.getElementById("fileInput").files[0];

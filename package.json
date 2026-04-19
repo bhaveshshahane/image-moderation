@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/bhaveshshahane/image-moderation#readme",
   "dependencies": {
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "express": "^5.2.1",
+    "multer": "^2.1.1"
   }
 }

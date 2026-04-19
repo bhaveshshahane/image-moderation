@@ -41,6 +41,69 @@ HTTP_REFERER=https://your-domain.com
 X_TITLE=Image Moderator
 ```
 
+## 🎯 Quick Start - Run the Demo
+
+The easiest way to try the image moderation is to run the included demo with the backend server:
+
+### Step 1: Install Dependencies
+```bash
+npm install
+npm install express multer
+```
+
+### Step 2: Set Up .env File
+```bash
+cp .env.example .env
+```
+Then edit `.env` and add your OpenRouter API key:
+```
+OPENROUTER_API_KEY=your-actual-api-key-here
+HTTP_REFERER=https://your-domain.com
+X_TITLE=Image Moderator
+```
+
+### Step 3: Start the Backend Server
+```bash
+node examples/backend-example.js
+```
+
+You should see:
+```
+🚀 Secure Moderation Server running on http://localhost:3000
+📝 API Key configured: ✅ Yes
+
+✨ Open demo.html and set backend URL to http://localhost:3000
+```
+
+### Step 4: Open in Browser
+Open your browser and navigate to:
+```
+http://localhost:3000
+```
+
+The demo page will load automatically with the backend URL pre-filled!
+
+### Step 5: Test It!
+- Upload an image file or paste an image URL
+- Click "Analyze Image"
+- See the moderation result (SAFE/UNSAFE) with reasons
+
+### Demo Page Preview
+
+To capture a screenshot of the demo:
+1. Run the server as shown above
+2. Open `http://localhost:3000` in your browser
+3. Take a screenshot and save it as `examples/demo-screenshot.png`
+
+The demo page features:
+- 🖼️ Image upload (file or URL)
+- ⚡ Real-time moderation analysis
+- 🎨 Clean, modern UI with Tailwind CSS
+- 📊 Clear results showing Safe/Unsafe status with reasons
+- 🔒 Secure backend processing (API key stays hidden)
+
+---
+
 ## Usage
 
 ### ⚠️ Security: Backend is Recommended
@@ -87,8 +150,21 @@ app.listen(3000);
 **See `examples/backend-example.js` for complete Express server with file upload & multipart support.**
 
 ### Basic Usage (Node.js)
-  "https://example.com/image.jpg"
-);
+
+```javascript
+const moderateImage = require("image-moderation");
+require("dotenv").config();
+
+const apiKey = process.env.OPENROUTER_API_KEY;
+
+// Moderate image from file
+const result = await moderateImage(apiKey, "./image.jpg");
+console.log(result);
+// Output: { status: "SAFE", reason: "...", safe: true }
+
+// Moderate image from URL
+const result2 = await moderateImage(apiKey, "https://example.com/image.jpg");
+console.log(result2);
 ```
 
 ### In Backend/Express
@@ -230,6 +306,57 @@ try {
 | Image file not found | Check image path exists |
 | Image load failed | Verify image URL is accessible |
 | API Error: 401 | Check API key is valid |
+
+## Demo Screenshots
+
+### How to Capture Demo Screenshots
+
+1. Follow the "Quick Start - Run the Demo" section above
+2. Open `http://localhost:3000` in your browser
+3. Upload an image and analyze it
+4. Take a screenshot using your browser's screenshot tool (Print Screen or Right-click → Capture)
+5. Save it as `examples/demo-screenshot.png`
+
+### What You'll See
+
+The demo interface includes:
+
+```
+┌─────────────────────────────────────────┐
+│        AI Image Moderator               │
+│       Advanced Content Detection        │
+├─────────────────────────────────────────┤
+│                                         │
+│  Backend URL: http://localhost:3000/... │
+│                                         │
+│  📁 Choose Image File                   │
+│                                         │
+│  🔗 Or paste image URL                  │
+│                                         │
+│  [    Analyze Image Button    ]         │
+│                                         │
+│  ✓ Result: SAFE/UNSAFE                  │
+│    Reason: [explanation]                │
+│                                         │
+│  🖼️ [Image Preview]                     │
+│                                         │
+│  ⚠️ For Production:                      │
+│  Use backend to keep API key secure     │
+│                                         │
+└─────────────────────────────────────────┘
+```
+
+### Features in the Demo
+
+- **Clean Modern Design** - Built with Tailwind CSS (dark theme)
+- **Easy Upload** - Drag & drop or select image files
+- **URL Support** - Analyze images from any URL
+- **Real-time Results** - Instant moderation feedback
+- **Loading Indicator** - Visual feedback during processing
+- **Result Color Coding** - Green for SAFE, Red for UNSAFE
+- **Responsive Design** - Works on mobile and desktop
+
+---
 
 ## License
 

@@ -24,6 +24,11 @@ app.use(express.urlencoded({ limit: "50mb" }));
 // Serve static files (demo.html)
 app.use(express.static(__dirname));
 
+// Serve demo.html at root
+app.get("/", (req, res) => {
+  res.sendFile("demo.html", { root: __dirname });
+});
+
 /**
  * POST /api/moderate
  * 
