@@ -1,0 +1,9 @@
+index.js
+examples/
+.env
+.env.example
+.gitignore
+README.md
+SCREENSHOT_GUIDE.md
+npm-debug.log*
+node_modules/

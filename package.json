@@ -1,8 +1,9 @@
 {
   "name": "ai-image-moderation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "AI-powered image moderation package using OpenRouter API",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": ["dist"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
